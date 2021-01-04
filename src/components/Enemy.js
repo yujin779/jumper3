@@ -93,6 +93,7 @@ export const createEnemysList = (number, startX, distance) => {
 const EnemyObj = ({ value, index }) => {
   // const [, setObj] = useState(nodes);
   const { nodes } = useGLTF(EnemisesObj[value.type.obj.gltfNum]);
+  // const { nodes } = useGLTF(EnemisesObj[0]);
   const [obj, setObj] = useState(nodes);
   console.log(obj);
   const ref = useRef();
