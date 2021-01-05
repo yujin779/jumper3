@@ -6,7 +6,7 @@ import {
   useFrame,
   useThree,
   extend,
-  useLoader
+  useLoader,
 } from "react-three-fiber";
 // import * as CANNON from "cannon";
 // import { createGlobalState } from "react-hooks-global-state";
@@ -27,26 +27,26 @@ const TypesOfEnemies = [
     obj: {
       name: "littleCactus",
       gltfNum: 0,
-      position: { x: -2.6, y: -0.7 },
-      rotation: { x: 1.5 }
+      position: { x: -2.6, y: -0.7, z: 0 },
+      rotation: { x: 1.5 },
     },
     colider: {
       args: [1.4, 1, 1],
-      position: { y: -0.1 }
-    }
+      position: { y: -0.1 },
+    },
   },
   {
     obj: {
       name: "bigCactus",
       gltfNum: 1,
-      position: { x: -2.6, y: -0.7 },
-      rotation: { x: 1.5 }
+      position: { x: -3.7, y: -0.8, z: -1.7 },
+      rotation: { x: 1.5 },
     },
     colider: {
-      args: [1.4, 1, 1],
-      position: { y: -0.1 }
-    }
-  }
+      args: [1, 2.3, 1],
+      position: { y: 0.6 },
+    },
+  },
 ];
 
 const EnemyColider = ({ value, index }) => {
@@ -57,7 +57,7 @@ const EnemyColider = ({ value, index }) => {
     fixedRotation: true,
     mass: 1,
     args: args,
-    position: [value.positionX, value.type.colider.position.y, 0]
+    position: [value.positionX, value.type.colider.position.y, 0],
   };
   const [ref, api] = useBox(() => physicsBox);
   useFrame(() => {
@@ -84,7 +84,7 @@ export const createEnemysList = (number, startX, distance) => {
     console.log("sttx", p);
     if (i !== 0) p = enemysList[i - 1].positionX + distance;
 
-    enemysList.push({ positionX: p, type: TypesOfEnemies[0] });
+    enemysList.push({ positionX: p, type: TypesOfEnemies[1] });
   }
   console.log("enemysList", enemysList);
   return enemysList;
@@ -101,6 +101,9 @@ const EnemyObj = ({ value, index }) => {
     ref.current.position.x = value.positionX + value.type.obj.position.x;
     ref.current.rotation.x = value.type.obj.rotation.x;
     ref.current.position.y = value.type.obj.position.y;
+    ref.current.position.z = value.type.obj.position.z;
+    // console.log("value", value.type.obj);
+    console.log("nodes", nodes.ObjObject);
   });
   return (
     <group>
@@ -122,11 +125,6 @@ export const EnemyData = ({ number = 10 }) => {
   const startX = 10;
   const distance = 3;
   const [groupA] = useState(createEnemysList(number, startX, distance));
-  const [indexx, setIndexx] = useState("a");
-  console.log("TypesOfEnemies[0]", TypesOfEnemies[0]);
-  console.log("TypesOfEnemies[1]", TypesOfEnemies[1]);
-  // setIndexx("b");
-  // console.log(indexx);
   useFrame(() => {
     groupA.map((p) => {
       if (p.positionX < returnX) {
@@ -136,7 +134,7 @@ export const EnemyData = ({ number = 10 }) => {
             groupA.map((o) => o.positionX)
           ) + distance;
         // { positionX: p, type: TypesOfEnemies[0] }
-        p.type = TypesOfEnemies[1];
+        // p.type = TypesOfEnemies[0];
         // setIndexx("b");
       }
       return (p.positionX -= speed);
