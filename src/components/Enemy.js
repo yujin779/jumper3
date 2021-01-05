@@ -21,7 +21,7 @@ import { useGLTF, PerspectiveCamera } from "@react-three/drei";
 const speed = 0.04;
 
 const EnemisesObj = [littleCactus, bigCactus];
-
+//vs
 const TypesOfEnemies = [
   {
     obj: {
